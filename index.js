@@ -11,7 +11,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 // Provinces and characters for template replacements
 const provinces = ['Bullcrapistan', 'Dank Memeria', 'Bullshittania', 'Idiotopia'];
-const characters = ['Chara', 'Asriel', 'Frisk', 'idiot1919', 'Dank memer', "Groyper", "Kris"];
+const characters = ['Chara', 'Asriel', 'Frisk', 'idiot1919', 'Dank memer', "Groyper", "Kris", "greg from IT", "o1", "some dude named '\Jort\'"];
 const cities = [
   "Meme city",
   "Crapia",
