@@ -138,7 +138,7 @@ const newsTemplates = [
   "${character1} starts a bakery in ${city}",
   "Chocolate shortage resolved after ${character1} discovers Pepes can produce cocoa.",
   //Entertainment
-  "Bullshitteria's Got Talent canceled after ${character1} accidentally summons actual demons during audition.",
+  "Bullshitteria's Got Talent canceled after ${character1} accidentally summons actual meme demons during audition.",
   "Annual Pepe Racing Championship in ${city} ends in chaos after ${character1} releases wild Groypers on track.",
   "fighting match between ${character1} and ${character2} draws record crowds in ${province}.",
   "${character1} wins first-ever Meme Olympics gold medal in 'Dankest Post' category.",
@@ -161,7 +161,7 @@ function generateNews() {
   const city = getRandomElement(cities);
   const infectionRate = (Math.random() * (99 - 0.1) + 0.1).toFixed(2);
   const character1 = getRandomElement(characters);
-  const brand = getRandomElement(brands);
+  const brands = getRandomElement(brands);
   let character2 = getRandomElement(characters);
 
   // ensure character2 != character1 if needed
@@ -240,6 +240,10 @@ const commands = [
   new SlashCommandBuilder()
     .setName('news')
     .setDescription('Post random Bullshitteria news in announcements (admin only)'),
+  new SlashCommandBuilder()
+  .setName('customnews')
+  .setDescription('Post custom Bullshitteria news in announcements (admin only)')
+  .addStringOption(option => option.setName('headline').setDescription('The news headline').setRequired(true)),
 ].map(cmd => cmd.toJSON());
 
 // Register slash commands once at startup
@@ -311,6 +315,46 @@ client.on('interactionCreate', async interaction => {
       .setFooter({ text: 'Stay safe and meme on!' })
       .setTimestamp();
     await interaction.reply({ embeds: [embed] });
+  }
+  if (interaction.commandName === 'customnews') {
+    if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+      return interaction.reply({ content: 'Nah fam, you ain\'t allowed to post news.', ephemeral: true });
+    }
+    const channel = await client.channels.fetch(ANNOUNCEMENTS_CHANNEL_ID).catch(() => null);
+    if (!channel) return interaction.reply('Announcements channel not found.');
+
+    const headline = interaction.options.getString('headline');
+
+    // Apply the same replacements as generateNews()
+    const province = getRandomElement(provinces);
+    const city = getRandomElement(cities);
+    const infectionRate = (Math.random() * (99 - 0.1) + 0.1).toFixed(2);
+    const character1 = getRandomElement(characters);
+    const brand = getRandomElement(brands);
+    let character2 = getRandomElement(characters);
+
+    // ensure character2 != character1
+    while(character2 === character1) {
+      character2 = getRandomCharacter();
+    }
+
+    // replace all placeholders in custom headline
+    const customNews = headline
+      .replace(/\${province}/g, province)
+      .replace(/\${city}/g, city)
+      .replace(/\${infectionRate}/g, infectionRate)
+      .replace(/\${character1}/g, character1)
+      .replace(/\${character2}/g, character2)
+      .replace(/\${brand}/g, brand);
+
+    const newsEmbed = new EmbedBuilder()
+      .setTitle('Bullshitteria News')
+      .setDescription(customNews)
+      .setColor('#FFAA00')
+      .setTimestamp();
+
+    await channel.send({ embeds: [newsEmbed] });
+    await interaction.reply({ content: 'Custom news posted!', ephemeral: true });
   }
 
   if (interaction.commandName === 'news') {
