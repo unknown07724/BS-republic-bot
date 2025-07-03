@@ -161,7 +161,7 @@ function generateNews() {
   const city = getRandomElement(cities);
   const infectionRate = (Math.random() * (99 - 0.1) + 0.1).toFixed(2);
   const character1 = getRandomElement(characters);
-  const brands = getRandomElement(brands);
+  const brand = getRandomElement(brands);
   let character2 = getRandomElement(characters);
 
   // ensure character2 != character1 if needed
@@ -179,7 +179,7 @@ function generateNews() {
     .replace(/\${infectionRate}/g, infectionRate)
     .replace(/\${character1}/g, character1)
     .replace(/\${character2}/g, character2)
-    .replace(/\${brand}/g, brands);
+    .replace(/\${brand}/g, brand);
 }
 
 // example usage
