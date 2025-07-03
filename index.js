@@ -24,11 +24,7 @@ const cities = [
 const brands = [
   "PETP (People for the Ethical Treatment of Pepes)",
   "Dank-a-Cola",
-  "Shitty town",
-  "Shitville",
-  "Shitfield",
-  "Idiot city",
-  "Catville"
+  "Catville nuclear corporation"
 ];
 const newsTemplates = [
   // weather and disasters
