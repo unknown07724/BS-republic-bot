@@ -32,7 +32,7 @@ const brands = [
 ];
 const newsTemplates = [
   // weather and disasters
-  "Tornado of memes sweeps through ${province}, causing widespread chaos. "
+  "Tornado of memes sweeps through ${province}, causing widespread chaos.",
   "Massive meme storm hits ${province}, raining Pepes for 3 days straight.",
   "chara commits suicide after chocolate shortage in **${province}**.",
   "${character1} accidentally kills ${character2} with a meme.",
