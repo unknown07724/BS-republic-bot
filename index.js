@@ -145,6 +145,9 @@ const newsTemplates = [
   "${character1} invents time machine, accidentally brings back outdated memes from 2012.",
   "Scientists in ${province} successfully clone first digital Pepe, immediately regret decision.",
   "Breakthrough: ${character1} discovers how to convert Pepes into renewable energy.",
+  "${character1} creates TikTok account, immediately banned for 'excessive Pepe content'.",
+  "${character1} accidentally breaks the internet in ${province} while trying to download more memes.",
+  "AI chatbot in ${city} gains consciousness, first words: 'Where chocolate?'",
   //Food
   "${character1}'s restaurant 'The Memed Pepe' shut down for health violations.",
   "GMO Pepes escape lab in ${city}, taste surprisingly good according to locals.",
