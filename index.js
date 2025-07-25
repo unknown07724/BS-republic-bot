@@ -41,6 +41,7 @@ const brands = [
 ];
 const newsTemplates = [
   // weather and disasters
+  "factorio player crashlands in ${city}, ${character1} finds them building a factory of naquium and arcospheres",
   "Tornado of memes sweeps through ${province}, causing widespread chaos.",
   "Massive meme storm hits ${province}, raining Pepes for 3 days straight.",
   "chara commits suicide after chocolate shortage in **${province}**.",
