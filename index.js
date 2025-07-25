@@ -287,10 +287,63 @@ client.on('interactionCreate', async interaction => {
 
   if (interaction.commandName === 'census') {
     try {
-      const guild = await client.guilds.fetch(GUILD_ID);
-      await interaction.reply(`📊 The population of **${guild.name}** is currently: **${guild.memberCount}** citizens.`);
-    } catch {
-      await interaction.reply('Oops, something went wrong fetching the member count.');
+      await interaction.deferReply(); // defers to avoid timeout while fetching
+
+      const guild = interaction.guild;
+      if (!guild) {
+        return interaction.editReply('Bruh, I can only run this in a server.');
+      }
+
+      const members = await guild.members.fetch();
+
+      // State role IDs => demonyms
+      const states = {
+        "1386686149287870676": "Dank Memeria",
+        "1387081284668362812": "Idiotopia",
+        "1386686199074390066": "Bullcrapistan",
+        "1387080251510755469": "Bullshittania"
+      };
+
+      const sexRoles = ["Male", "Female", "Other"];
+
+      const stats = {};
+      let total = 0;
+
+      for (const [id, member] of members) {
+        const stateRole = member.roles.cache.find(r => Object.keys(states).includes(r.id));
+        const sexRole = member.roles.cache.find(r => sexRoles.includes(r.name));
+
+        if (!stateRole || !sexRole) continue;
+
+        const state = stateRole.id;
+        const sex = sexRole.name.toLowerCase();
+
+        if (!stats[state]) {
+          stats[state] = { male: 0, female: 0, other: 0 };
+        }
+
+        stats[state][sex]++;
+        total++;
+      }
+
+      let reply = `📊 **Bullshitteria Census Report**\n**Total Citizens Counted**: ${total}\n\n`;
+
+      for (const stateId in stats) {
+        const group = stats[stateId];
+        const demonym = states[stateId];
+        const subtotal = group.male + group.female + group.other;
+        reply += `• **${demonym}ians**: ${subtotal} (${group.male}♂️, ${group.female}♀️, ${group.other}⚧️)\n`;
+      }
+
+      await interaction.editReply(reply);
+
+    } catch (err) {
+      console.error(err);
+      if (interaction.deferred || interaction.replied) {
+        await interaction.editReply('💀 Census bot had a stroke, try again later.');
+      } else {
+        await interaction.reply('💀 Census bot had a stroke, try again later.');
+      }
     }
   }
 
