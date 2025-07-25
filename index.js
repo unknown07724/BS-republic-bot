@@ -304,19 +304,24 @@ client.on('interactionCreate', async interaction => {
         "1387080251510755469": "Bullshittania"
       };
 
-      const sexRoles = ["Male", "Female", "Other"];
+      // Gender role IDs => names
+      const sexRoles = {
+        "MALE_ROLE_ID_HERE": "male",
+        "FEMALE_ROLE_ID_HERE": "female", 
+        "OTHER_ROLE_ID_HERE": "other"
+      };
 
       const stats = {};
       let total = 0;
 
       for (const [id, member] of members) {
         const stateRole = member.roles.cache.find(r => Object.keys(states).includes(r.id));
-        const sexRole = member.roles.cache.find(r => sexRoles.includes(r.name));
+        const sexRole = member.roles.cache.find(r => Object.keys(sexRoles).includes(r.id));
 
         if (!stateRole || !sexRole) continue;
 
         const state = stateRole.id;
-        const sex = sexRole.name.toLowerCase();
+        const sex = sexRoles[sexRole.id];
 
         if (!stats[state]) {
           stats[state] = { male: 0, female: 0, other: 0 };
