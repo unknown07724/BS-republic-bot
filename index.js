@@ -10,7 +10,9 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 // Provinces and characters for template replacements
-const provinces = ['Bullcrapistan', 'Dank Memeria', 'Bullshittania', 'Idiotopia'];
+const provinces = ['Bullcrapistan', 'Dank Memeria', 'Bullshittania', 'Idiotopia',"kubusland"];
+
+const nations = ['Bullshitteria', 'Antiga republic', 'Jam republic', 'Gamer federation',"the G empire"];
 
 const characters = [
 'Chara',
@@ -22,7 +24,8 @@ const characters = [
 "Kris",
 "greg from IT", 
 "o1",
-"some dude named Jort"
+"some dude named Jort",
+"Kubus"
 ];
 
 const cities = [
@@ -32,7 +35,8 @@ const cities = [
   "Shitville",
   "Shitfield",
   "Idiot city",
-  "Catville"
+  "Catville",
+  "kubusville"
 ];
 const brands = [
   "PETP (People for the Ethical Treatment of Pepes)",
@@ -41,6 +45,7 @@ const brands = [
 ];
 const newsTemplates = [
   // weather and disasters
+  "In KubusVille, Kubus has been launched to the sun after jumping underwater",
   "factorio player crashlands in ${city}, ${character1} finds them building a factory of naquium and arcospheres",
   "Tornado of memes sweeps through ${province}, causing widespread chaos.",
   "Massive meme storm hits ${province}, raining Pepes for 3 days straight.",
@@ -179,6 +184,7 @@ function generateNews() {
   const infectionRate = (Math.random() * (99 - 0.1) + 0.1).toFixed(2);
   const character1 = getRandomElement(characters);
   const brand = getRandomElement(brands);
+  const nation = getRandomElement(nations);
   let character2 = getRandomElement(characters);
 
   // ensure character2 != character1 if needed
@@ -196,7 +202,8 @@ function generateNews() {
     .replace(/\${infectionRate}/g, infectionRate)
     .replace(/\${character1}/g, character1)
     .replace(/\${character2}/g, character2)
-    .replace(/\${brand}/g, brand);
+    .replace(/\${brand}/g, brand)
+    .replace(/\${nation}/g, nation);
 }
 
 // example usage
@@ -298,17 +305,16 @@ client.on('interactionCreate', async interaction => {
 
       // State role IDs => demonyms
       const states = {
-        "1386686149287870676": "Dank Memeria",
-        "1387081284668362812": "Idiotopia",
-        "1386686199074390066": "Bullcrapistan",
-        "1387080251510755469": "Bullshittania"
+        "1386686149287870676": "Memer",
+        "1387081284668362812": "Idiot",
+        "1386686199074390066": "Bullcrapistani",
+        "1387080251510755469": "Bullshittanian"
       };
 
       // Gender role IDs => names
       const sexRoles = {
-        "MALE_ROLE_ID_HERE": "male",
-        "FEMALE_ROLE_ID_HERE": "female", 
-        "OTHER_ROLE_ID_HERE": "other"
+        "1398346394351173875": "male",
+        "1398346416136392784": "female", 
       };
 
       const stats = {};
@@ -324,7 +330,7 @@ client.on('interactionCreate', async interaction => {
         const sex = sexRoles[sexRole.id];
 
         if (!stats[state]) {
-          stats[state] = { male: 0, female: 0, other: 0 };
+          stats[state] = { male: 0, female: 0};
         }
 
         stats[state][sex]++;
@@ -336,8 +342,8 @@ client.on('interactionCreate', async interaction => {
       for (const stateId in stats) {
         const group = stats[stateId];
         const demonym = states[stateId];
-        const subtotal = group.male + group.female + group.other;
-        reply += `• **${demonym}ians**: ${subtotal} (${group.male}♂️, ${group.female}♀️, ${group.other}⚧️)\n`;
+        const subtotal = group.male + group.female;
+        reply += `• **${demonym}s**: ${subtotal} (${group.male}♂️, ${group.female}♀️\n`;
       }
 
       await interaction.editReply(reply);
